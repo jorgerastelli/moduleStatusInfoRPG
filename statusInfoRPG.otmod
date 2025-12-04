@@ -1,0 +1,15 @@
+Module
+  name: statusInfoRPG
+  description: Mod para visualização de status obtidos pelos refines de itens equipados no RPG.
+  author: 
+  website:
+  version: 1.0
+
+  autoload: true
+  autoload-priority: 1000
+
+  scripts: [ "statusInfoRPG.lua" ]
+  reloadable: true
+
+  @onLoad: init()
+  @onUnload: terminate()

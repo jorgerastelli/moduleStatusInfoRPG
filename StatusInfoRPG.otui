@@ -1,0 +1,181 @@
+MainWindow
+  id: statusInfoWindow
+  width: 400
+  height: 400
+  text: "Status Info RPG"
+  style: "frame"
+  @onEscape: self:hide()
+
+  Label
+    text: "Atributos Extras"
+    style: "label"
+    color: yellow
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 8
+    font-size: 14
+
+  Label
+    id: trpgb_stat_health
+    text: "Health Flat: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-top: 12
+    margin-left: 15
+
+  Label
+    id: trpgb_stat_healthpercent
+    text: "Health %: 0%"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-top: 4
+    margin-left: 15
+
+  Label
+    id: trpgb_stat_manapercent
+    text: "Mana %: 0%"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-top: 4
+    margin-left: 15
+
+  Label
+    id: trpgb_mana
+    text: "Mana Flat: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-top: 4
+    margin-left: 15
+
+  Label
+    id: trpgb_armor
+    text: "Extra Armor: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-top: 4
+    margin-left: 15
+
+  Label
+    id: trpgb_stat_magiclevel
+    text: "Magic Level: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-top: 4
+    margin-left: 15
+
+  Label
+    id: trpgb_skill_fist
+    text: "Fist Skill: 0"
+    style: "label"
+    anchors.top: trpgb_stat_health.top
+    anchors.right: parent.right
+    margin-right: 30
+
+  Label
+    id: trpgb_skill_sword
+    text: "Sword Skill: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.right: parent.right
+    margin-top: 4
+    margin-right: 30
+
+  Label
+    id: trpgb_skill_axe
+    text: "Axe Skill: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.right: parent.right
+    margin-top: 4
+    margin-right: 30
+
+  Label
+    id: trpgb_skill_club
+    text: "Club Skill: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.right: parent.right
+    margin-top: 4
+    margin-right: 30
+
+  Label
+    id: trpgb_skill_distance
+    text: "Distance Skill: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.right: parent.right
+    margin-top: 4
+    margin-right: 30
+
+  Label
+    id: trpgb_skill_shield
+    text: "Shielding Skill: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.right: parent.right
+    margin-top: 4
+    margin-right: 30
+
+  Label
+    id: trpgb_skill_meleepercent
+    text: "Melee %: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.right: parent.right
+    margin-top: 4
+    margin-right: 30
+
+  Label
+    id: trpgb_skill_distancepercent
+    text: "Distance %: 0"
+    style: "label"
+    anchors.top: prev.bottom
+    anchors.right: parent.right
+    margin-top: 4
+    margin-right: 30
+
+  Label
+    id: trpgb_sockets
+    text: "Sockets: 0"
+    style: "label"
+    anchors.top: trpgb_stat_magiclevel.bottom
+    anchors.left: parent.left
+    margin-top: 4
+    margin-left: 15
+
+  Label
+    id: trpgb_healthgain
+    text: "Life Regen: 0"
+    style: "label"
+    anchors.top: trpgb_sockets.bottom
+    anchors.left: parent.left
+    margin-top: 4  
+    margin-left: 15
+
+  Label
+    id: trpgb_managain
+    text: "Mana Regen: 0"
+    style: "label"
+    anchors.top: trpgb_healthgain.bottom
+    anchors.left: parent.left
+    margin-top: 4
+    margin-left: 15
+
+
+  Button
+    width: 80
+    height: 22
+    text: "Close"
+    style: "button"
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-bottom: 5
+    margin-right: 5
+    @onClick: self:getParent():hide()
+
