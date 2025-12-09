@@ -1,8 +1,8 @@
 Module
   name: statusInfoRPG
   description: Mod para visualização de status obtidos pelos refines de itens equipados no RPG.
-  author: 
-  website:
+  author: Jorge Rastelli
+  website: https://github.com/jorgerastelli/moduleStatusInfoRPG.git
   version: 1.0
 
   autoload: true

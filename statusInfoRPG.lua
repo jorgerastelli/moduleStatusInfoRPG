@@ -1,16 +1,60 @@
-OPCODE_API_INTERFACE = 30
----------------------------------------------------------------
--- VARIÁVEIS DO MÓDULO
----------------------------------------------------------------
+local REQUESTER_NAME = "ModuleStatusInfoRPG"
+local OPCODE_API_INTERFACE = 30
+
 local statusInfoWindow = nil
 local statusInfoButton = nil
-local totalStats = {}
+
+-- Guarda prefixos originais (ex: "Fist: ")
+local labelPrefixes = {}
+
+---------------------------------------------------------------
+-- UTIL
+---------------------------------------------------------------
+local function getLabel(id)
+    if not statusInfoWindow then return nil end
+    return statusInfoWindow:getChildById(id)
+end
+
+-- Define valor na label (valor padrão = 0)
+local function setStatValue(id, value)
+    local label = getLabel(id)
+    if not label then return end
+
+    -- Converter para número → se falhar vira 0
+    value = tonumber(value) or 0
+
+    -- Guardar prefixo uma única vez
+    if not labelPrefixes[id] then
+        labelPrefixes[id] = label:getText()
+    end
+
+    -- Atualizar texto
+    label:setText(labelPrefixes[id] .. value)
+end
+
+-- Preenche todas as labels com valor 0 ao abrir a janela
+local function fillAllStatsWithZero()
+    if not statusInfoWindow then return end
+
+    for _, widget in pairs(statusInfoWindow:getChildren()) do
+        if widget:getClassName() == "UILabel" and widget:getId() ~= "" then
+            local id = widget:getId()
+
+            -- Guarda prefixo se ainda não tiver salvo
+            if not labelPrefixes[id] then
+                labelPrefixes[id] = widget:getText()
+            end
+
+            -- Coloca zero
+            widget:setText(labelPrefixes[id] .. "0")
+        end
+    end
+end
 
 ---------------------------------------------------------------
 -- INIT
 ---------------------------------------------------------------
 function init()
-    -- Carrega o UI
     statusInfoWindow = g_ui.displayUI('statusInfoRPG.otui')
     if not statusInfoWindow then
         perror("[statusInfoRPG] Falha ao carregar statusInfoRPG.otui")
@@ -19,33 +63,20 @@ function init()
 
     statusInfoWindow:hide()
 
-    -- Botão no topo para abrir/fechar
     statusInfoButton = modules.client_topmenu.addRightGameToggleButton(
         'statusInfoRPGButton',
         "Status Info RPG",
-        'icon',
+        '/mods/statusInfoRPG/statusModIcon',
         toggleWindow,
         true
     )
 
-
-    print("[statusInfoRPG] Loaded successfully, e Thanatos melhor PET! ")
     connect(ProtocolGame, { onExtendedOpcode = onExtendedOpcode }, true)
 end
 
----------------------------------------------------------------
--- TERMINATE
----------------------------------------------------------------
 function terminate()
-    if statusInfoButton then
-        statusInfoButton:destroy()
-        statusInfoButton = nil
-    end
-
-    if statusInfoWindow then
-        statusInfoWindow:destroy()
-        statusInfoWindow = nil
-    end
+    if statusInfoButton then statusInfoButton:destroy() end
+    if statusInfoWindow then statusInfoWindow:destroy() end
     disconnect(ProtocolGame, { onExtendedOpcode = onExtendedOpcode })
 end
 
@@ -53,81 +84,73 @@ end
 -- TOGGLE WINDOW
 ---------------------------------------------------------------
 function toggleWindow()
-    if not statusInfoWindow then return end
-
     if statusInfoWindow:isVisible() then
         statusInfoWindow:hide()
     else
-        g_game.getProtocolGame():sendExtendedOpcode(OPCODE_API_INTERFACE, "ModuleStatusInfoRPG;PLAYER-STATS")
+        statusInfoWindow:show()
+        statusInfoWindow:raise()
+        statusInfoWindow:focus()
 
+        -- Preenche Status com 0 
+
+        fillAllStatsWithZero()
+
+        -- Solicita valores reais ao servidor
+        g_game.getProtocolGame():sendExtendedOpcode(
+            OPCODE_API_INTERFACE,
+            REQUESTER_NAME .. ";PLAYER-STATS"
+        )
     end
 end
 
+---------------------------------------------------------------
+-- RECEBENDO DO SERVIDOR
+---------------------------------------------------------------
 function onExtendedOpcode(protocol, opcode, buffer)
-    if opcode == OPCODE_API_INTERFACE then
-        local params = string.explode(buffer, ";", 1)
-        local paramType = params[1]
-        local paramValue = params[2]
+    if opcode ~= OPCODE_API_INTERFACE then return end
 
-        if paramType == "PLAYER-STATS-RESPONSE" then
-            statusInfoWindow:show()
-            statusInfoWindow:raise()
-            statusInfoWindow:focus()
-            local response = loadstring("return " .. paramValue)()
-            local stats = response.refineSystem.attributes
+    local parts = string.explode(buffer, ";")
+    if parts[1] ~= REQUESTER_NAME then return end
 
-            -- Chamar função pra ler e escrever as labels
-            updateStatusModule(stats)
-        end
+    if parts[2] == "PLAYER-STATS-RESPONSE" then
+        local data = loadstring("return " .. table.concat(parts, ";", 3))()
+        updateStatusModule(data.refineSystem.attributes, data.equippedItems)
     end
 end
 
 ---------------------------------------------------------------
--- ATUALIZA GUI 
+-- UPDATE DOS STATUS + IMBUEMENTS
 ---------------------------------------------------------------
-function updateStatusModule(stats)
-    if not statusInfoWindow then
-        print("[statusInfoRPG] statusInfoWindow NIL ao atualizar GUI!")
-        return
+function updateStatusModule(stats, equippedItems)
+
+    -------------------------------------------------------------------
+    -- 1. Atualizar STATS NORMAIS
+    -------------------------------------------------------------------
+    for key, value in pairs(stats) do
+        setStatValue(key, value)
     end
 
-    -- Função auxiliar para atualizar a label
-    local function setLabel(id, value, suffix)
-        local lbl = statusInfoWindow:recursiveGetChildById(id)
-        if lbl then
-            suffix = suffix or ""
-            -- Pega o texto original da label até ": " para manter o prefixo
-            local baseText = lbl:getText():match("^[^:]+:%s*") or ""
-            lbl:setText(baseText .. tostring(value) .. suffix)
-        else
-            print("[statusInfoRPG] Label '" .. id .. "' não encontrada ao atualizar!")
+    -------------------------------------------------------------------
+    -- 2. Ler e somar IMBUEMENTS
+    -------------------------------------------------------------------
+    local imbueSum = {}
+
+    for slot, item in pairs(equippedItems or {}) do
+        if item.imbuements and item.imbuements.slot then
+            for _, imb in pairs(item.imbuements.slot) do
+                if imb.name and imb.name ~= "" then
+                    local id = imb.name:lower():gsub("%s+", "_")
+                    local val = tonumber(imb.value) or 0
+                    imbueSum[id] = (imbueSum[id] or 0) + val
+                end
+            end
         end
     end
 
-    -- Status básicos
-    setLabel("trpgb_stat_health", stats.trpgb_stat_health)
-    setLabel("trpgb_stat_healthpercent", stats.trpgb_stat_healthpercent, "%")
-    setLabel("trpgb_stat_manapercent", stats.trpgb_stat_manapercent, "%")
-    setLabel("trpgb_stat_mana", stats.trpgb_stat_mana)
-    setLabel("trpgb_armor", stats.trpgb_armor)
-    setLabel("trpgb_stat_magiclevel", stats.trpgb_stat_magiclevel)
-    setLabel("trpgb_attack", stats.trpgb_attack)
-    setLabel("trpgb_defense", stats.trpgb_defense)
-
-
-    -- Skills
-    setLabel("trpgb_skill_fist", stats.trpgb_skill_fist)
-    setLabel("trpgb_skill_sword", stats.trpgb_skill_sword)
-    setLabel("trpgb_skill_axe", stats.trpgb_skill_axe)
-    setLabel("trpgb_skill_club", stats.trpgb_skill_club)
-    setLabel("trpgb_skill_distance", stats.trpgb_skill_distance)
-    setLabel("trpgb_skill_shield", stats.trpgb_skill_shield)
-    setLabel("trpgb_skill_meleepercent", stats.trpgb_skill_meleepercent)
-    setLabel("trpgb_skill_distancepercent", stats.trpgb_skill_distancepercent)
-
-    -- Outros
-    setLabel("trpgb_sockets", stats.trpgb_sockets)
-    setLabel("trpgb_healthgain", stats.trpgb_healthgain)
-    setLabel("trpgb_managain", stats.trpgb_managain)
+    -------------------------------------------------------------------
+    -- 3. Aplicar IMBUEMENTS nas labels
+    -------------------------------------------------------------------
+    for id, value in pairs(imbueSum) do
+        setStatValue(id, value)
+    end
 end
-

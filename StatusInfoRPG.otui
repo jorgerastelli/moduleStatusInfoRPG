@@ -1,211 +1,374 @@
 MainWindow
   id: statusInfoWindow
-  width: 400
-  height: 430
+  width: 620
+  height: 420
   text: "Status Info RPG"
-  style: "frame"
   @onEscape: self:hide()
 
   Label
-    id: title
-    text: "Status do SET"
-    style: "label"
-    color: yellow
+    text: "Status do Set"
+    color: white
     anchors.top: parent.top
     anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 8
     font-size: 14
+    text-auto-resize: true
 
 
   Label
-    id: trpgb_stat_health
-    text: "Health Flat: 0"
-    style: "label"
-    anchors.top: title.bottom
+    id: basic_title
+    text: "Basic Stats"
+    color: yellow
+    anchors.top: prev.bottom
     anchors.left: parent.left
-    margin-top: 12
-    margin-left: 15
+    margin-top: 15
+    margin-left: 10
+    font-size: 13
+    text-auto-resize: true
+
+  Label
+    id: trpgb_stat_health
+    text: "Health Flat: "
+    anchors.top: basic_title.bottom
+    anchors.left: basic_title.left
+    margin-top: 6
     text-auto-resize: true
 
   Label
     id: trpgb_stat_healthpercent
-    text: "Health %: 0%"
-    style: "label"
+    text: "Health %: "
     anchors.top: prev.bottom
-    anchors.left: parent.left
+    anchors.left: basic_title.left
     margin-top: 4
-    margin-left: 15
     text-auto-resize: true
 
   Label
     id: trpgb_stat_manapercent
-    text: "Mana %: 0%"
-    style: "label"
+    text: "Mana %: "
     anchors.top: prev.bottom
-    anchors.left: parent.left
+    anchors.left: basic_title.left
     margin-top: 4
-    margin-left: 15
     text-auto-resize: true
 
   Label
     id: trpgb_stat_mana
-    text: "Mana Flat: 0"
-    style: "label"
+    text: "Mana Flat: "
     anchors.top: prev.bottom
-    anchors.left: parent.left
+    anchors.left: basic_title.left
     margin-top: 4
-    margin-left: 15
     text-auto-resize: true
 
   Label
     id: trpgb_armor
-    text: "Armor: 0"
-    style: "label"
+    text: "Armor: "
     anchors.top: prev.bottom
-    anchors.left: parent.left
+    anchors.left: basic_title.left
     margin-top: 4
-    margin-left: 15
     text-auto-resize: true
 
   Label
     id: trpgb_stat_magiclevel
-    text: "Magic Level: 0"
-    style: "label"
+    text: "Magic Level: "
     anchors.top: prev.bottom
-    anchors.left: parent.left
+    anchors.left: basic_title.left
     margin-top: 4
-    margin-left: 15
     text-auto-resize: true
-
-  Label
-    id: trpgb_sockets
-    text: "Sockets: 0"
-    style: "label"
-    anchors.top: prev.bottom
-    anchors.left: parent.left
-    margin-top: 8
-    margin-left: 15
-    text-auto-resize: true
-
-  Label
-    id: trpgb_healthgain
-    text: "Life Regen: 0"
-    style: "label"
-    anchors.top: prev.bottom
-    anchors.left: parent.left
-    margin-top: 4  
-    margin-left: 15
-    text-auto-resize: true
-
-  Label
-    id: trpgb_managain
-    text: "Mana Regen: 0"
-    style: "label"
-    anchors.top: prev.bottom
-    anchors.left: parent.left
-    margin-top: 4
-    margin-left: 15
-    text-auto-resize: true
-
 
   Label
     id: trpgb_attack
-    text: "Attack: 0"
-    style: "label"
-    anchors.top: title.bottom
-    anchors.right: parent.right
+    text: "Attack: "
+    anchors.top: prev.bottom
+    anchors.left: basic_title.left
     margin-top: 4
-    margin-right: 30
     text-auto-resize: true
 
   Label
     id: trpgb_defense
-    text: "Defense: 0"
-    style: "label"
+    text: "Defense: "
     anchors.top: prev.bottom
-    anchors.right: parent.right
+    anchors.left: basic_title.left
     margin-top: 4
-    margin-right: 30
+    text-auto-resize: true
+
+  Label
+    id: trpgb_sockets
+    text: "Sockets: "
+    anchors.top: prev.bottom
+    anchors.left: basic_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: trpgb_healthgain
+    text: "Life Regen: "
+    anchors.top: prev.bottom
+    anchors.left: basic_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: trpgb_managain
+    text: "Mana Regen: "
+    anchors.top: prev.bottom
+    anchors.left: basic_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+
+  Label
+    id: skill_title
+    text: "Skills"
+    color: green
+    anchors.top: basic_title.top
+    anchors.left: parent.left
+    margin-left: 160
+    font-size: 13
     text-auto-resize: true
 
   Label
     id: trpgb_skill_fist
-    text: "Fist Skill: 0"
-    style: "label"
-    anchors.top: prev.bottom
-    anchors.right: parent.right
-    margin-top: 4
-    margin-right: 30
+    text: "Fist: "
+    anchors.top: skill_title.bottom
+    anchors.left: skill_title.left
+    margin-top: 6
     text-auto-resize: true
 
   Label
     id: trpgb_skill_sword
-    text: "Sword Skill: 0"
-    style: "label"
+    text: "Sword: "
     anchors.top: prev.bottom
-    anchors.right: parent.right
+    anchors.left: skill_title.left
     margin-top: 4
-    margin-right: 30
     text-auto-resize: true
 
   Label
     id: trpgb_skill_axe
-    text: "Axe Skill: 0"
-    style: "label"
+    text: "Axe: "
     anchors.top: prev.bottom
-    anchors.right: parent.right
+    anchors.left: skill_title.left
     margin-top: 4
-    margin-right: 30
     text-auto-resize: true
 
   Label
     id: trpgb_skill_club
-    text: "Club Skill: 0"
-    style: "label"
+    text: "Club: "
     anchors.top: prev.bottom
-    anchors.right: parent.right
+    anchors.left: skill_title.left
     margin-top: 4
-    margin-right: 30
     text-auto-resize: true
 
   Label
     id: trpgb_skill_distance
-    text: "Distance Skill: 0"
-    style: "label"
+    text: "Distance: "
     anchors.top: prev.bottom
-    anchors.right: parent.right
+    anchors.left: skill_title.left
     margin-top: 4
-    margin-right: 30
     text-auto-resize: true
 
   Label
     id: trpgb_skill_shield
-    text: "Shielding Skill: 0"
-    style: "label"
+    text: "Shielding: "
     anchors.top: prev.bottom
-    anchors.right: parent.right
+    anchors.left: skill_title.left
     margin-top: 4
-    margin-right: 30
     text-auto-resize: true
 
   Label
     id: trpgb_skill_meleepercent
-    text: "Melee %: 0"
-    style: "label"
+    text: "Melee %: "
     anchors.top: prev.bottom
-    anchors.right: parent.right
+    anchors.left: skill_title.left
     margin-top: 4
-    margin-right: 30
     text-auto-resize: true
 
   Label
     id: trpgb_skill_distancepercent
-    text: "Distance %: 0"
-    style: "label"
+    text: "Distance %: "
     anchors.top: prev.bottom
-    anchors.right: parent.right
+    anchors.left: skill_title.left
     margin-top: 4
-    margin-right: 30
+    text-auto-resize: true
+
+
+  Label
+    id: prot_title
+    text: "Protections"
+    color: blue
+    anchors.top: basic_title.top
+    anchors.left: parent.left
+    margin-left: 300
+    font-size: 13
+    text-auto-resize: true
+
+  Label
+    id: cloud_fabric
+    text: "Energy Protection %: "
+    anchors.top: prot_title.bottom
+    anchors.left: prot_title.left
+    margin-top: 6
+    text-auto-resize: true
+
+  Label
+    id: demon_presence
+    text: "Holy Protection %: "
+    anchors.top: prev.bottom
+    anchors.left: prot_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: dragon_hide
+    text: "Fire Protection %: "
+    anchors.top: prev.bottom
+    anchors.left: prot_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: lich_shroud
+    text: "Death Protection %: "
+    anchors.top: prev.bottom
+    anchors.left: prot_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: quara_scale
+    text: "Ice Protection %: "
+    anchors.top: prev.bottom
+    anchors.left: prot_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: snake_skin
+    text: "Earth Protection %: "
+    anchors.top: prev.bottom
+    anchors.left: prot_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: phys_protection
+    text: "Physical Protection %: "
+    anchors.top: prev.bottom
+    anchors.left: prot_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+
+  Label
+    id: damage_title
+    text: "Dano & Suporte"
+    color: red
+    anchors.top: basic_title.top
+    anchors.left: parent.left
+    margin-left: 470
+    font-size: 13
+    text-auto-resize: true
+
+  Label
+    id: scorch
+    text: "Fire Dmg: "
+    anchors.top: damage_title.bottom
+    anchors.left: damage_title.left
+    margin-top: 6
+    text-auto-resize: true
+
+  Label
+    id: frost
+    text: "Ice Dmg: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: venom
+    text: "Earth Dmg: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: electrify
+    text: "Energy Dmg: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: reap
+    text: "Death Dmg: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: epiphany
+    text: "Magic Level: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 6
+    text-auto-resize: true
+
+  Label
+    id: precision
+    text: "Distance Level: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: slash
+    text: "Sword Level: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: chop
+    text: "Axe Level: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: bash
+    text: "Club Level: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: vampirism
+    text: "Life Leech: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 6
+    text-auto-resize: true
+
+  Label
+    id: void
+    text: "Mana Leech: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
+    text-auto-resize: true
+
+  Label
+    id: strike
+    text: "Critical Strike: "
+    anchors.top: prev.bottom
+    anchors.left: damage_title.left
+    margin-top: 4
     text-auto-resize: true
 
 
