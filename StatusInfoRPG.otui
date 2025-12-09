@@ -6,6 +6,7 @@ MainWindow
   @onEscape: self:hide()
 
   Label
+    id: set_status
     text: "Status do Set"
     color: white
     anchors.top: parent.top
@@ -15,6 +16,7 @@ MainWindow
     text-auto-resize: true
 
 
+
   Label
     id: basic_title
     text: "Basic Stats"
@@ -22,7 +24,7 @@ MainWindow
     anchors.top: prev.bottom
     anchors.left: parent.left
     margin-top: 15
-    margin-left: 10
+    margin-left: 15
     font-size: 13
     text-auto-resize: true
 
@@ -115,13 +117,14 @@ MainWindow
     text-auto-resize: true
 
 
+
   Label
     id: skill_title
     text: "Skills"
     color: green
     anchors.top: basic_title.top
     anchors.left: parent.left
-    margin-left: 160
+    margin-left: 180
     font-size: 13
     text-auto-resize: true
 
@@ -188,6 +191,7 @@ MainWindow
     anchors.left: skill_title.left
     margin-top: 4
     text-auto-resize: true
+
 
 
   Label
@@ -257,13 +261,15 @@ MainWindow
     text-auto-resize: true
 
 
+
+
   Label
     id: damage_title
-    text: "Dano & Suporte"
+    text: "Dmg & Sup"
     color: red
     anchors.top: basic_title.top
     anchors.left: parent.left
-    margin-left: 470
+    margin-left: 480
     font-size: 13
     text-auto-resize: true
 
@@ -372,13 +378,14 @@ MainWindow
     text-auto-resize: true
 
 
+
   Button
     width: 80
     height: 22
     text: "Close"
-    style: "button"
     anchors.bottom: parent.bottom
     anchors.right: parent.right
-    margin-bottom: 5
-    margin-right: 5
+    margin-bottom: 8
+    margin-right: 10
+    style: "button"
     @onClick: self:getParent():hide()

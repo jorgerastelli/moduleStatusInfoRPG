@@ -7,6 +7,15 @@ local statusInfoButton = nil
 -- Guarda prefixos originais (ex: "Fist: ")
 local labelPrefixes = {}
 
+-- IDs que NÃO devem receber "0"
+local ignoreZero = {
+    basic_title = true,
+    skill_title = true,
+    prot_title = true,
+    damage_title = true,
+    set_status = true,
+}
+
 ---------------------------------------------------------------
 -- UTIL
 ---------------------------------------------------------------
@@ -20,33 +29,39 @@ local function setStatValue(id, value)
     local label = getLabel(id)
     if not label then return end
 
-    -- Converter para número → se falhar vira 0
     value = tonumber(value) or 0
+
+    -- NÃO altera títulos
+    if ignoreZero[id] then
+        return
+    end
 
     -- Guardar prefixo uma única vez
     if not labelPrefixes[id] then
         labelPrefixes[id] = label:getText()
     end
 
-    -- Atualizar texto
     label:setText(labelPrefixes[id] .. value)
 end
 
--- Preenche todas as labels com valor 0 ao abrir a janela
+-- Preenche labels com 0, exceto títulos
 local function fillAllStatsWithZero()
     if not statusInfoWindow then return end
 
     for _, widget in pairs(statusInfoWindow:getChildren()) do
-        if widget:getClassName() == "UILabel" and widget:getId() ~= "" then
+        if widget:getClassName() == "UILabel" then
+
             local id = widget:getId()
 
-            -- Guarda prefixo se ainda não tiver salvo
-            if not labelPrefixes[id] then
-                labelPrefixes[id] = widget:getText()
-            end
+            -- Só coloca 0 em labels com ID que NÃO estão na ignoreZero
+            if id and id ~= "" and not ignoreZero[id] then
 
-            -- Coloca zero
-            widget:setText(labelPrefixes[id] .. "0")
+                if not labelPrefixes[id] then
+                    labelPrefixes[id] = widget:getText()
+                end
+
+                widget:setText(labelPrefixes[id] .. "0")
+            end
         end
     end
 end
@@ -91,8 +106,7 @@ function toggleWindow()
         statusInfoWindow:raise()
         statusInfoWindow:focus()
 
-        -- Preenche Status com 0 
-
+        -- Coloca 0 em labels normais
         fillAllStatsWithZero()
 
         -- Solicita valores reais ao servidor
